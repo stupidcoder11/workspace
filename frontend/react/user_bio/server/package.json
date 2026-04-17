@@ -1,0 +1,20 @@
+{
+  "name": "user_bio_server",
+  "version": "1.0.0",
+  "description": "Server to demonstrate GraphQL",
+  "keywords": [
+    "graphQL",
+    "express"
+  ],
+  "license": "ISC",
+  "author": "Devesh",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@apollo/server": "^5.5.0",
+    "graphql": "^16.13.2"
+  }
+}
