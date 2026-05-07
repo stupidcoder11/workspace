@@ -22,7 +22,7 @@ def x_plus_y(x: list[int], y: list[int]) -> list[int]:
     i = len(x) - 1
     j = len(y) - 1
     carry = 0
-    res = []
+    res: list[int] = []
     while i >= 0 or j >=0 or carry:
         dx = x[i] if i >= 0 else 0
         dy = y[j] if j >= 0 else 0
