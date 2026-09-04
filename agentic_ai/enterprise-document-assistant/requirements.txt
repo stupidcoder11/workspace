@@ -1,0 +1,13 @@
+fastapi
+uvicorn
+langchain
+langchain-community
+langchain-google-genai
+langchain-mistralai
+langchain-chroma
+langchain-text-splitters
+chromadb>=1.5.9
+pypdf
+python-multipart
+python-dotenv
+pydantic-settings
