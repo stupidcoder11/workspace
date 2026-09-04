@@ -11,9 +11,8 @@ router = APIRouter()
 
 @router.post("/ask", response_model=AskResponse)
 def ask(request: AskRequest):
-    answer: str = ask_question(request.question)
-
-    return AskResponse(answer=answer)
+    response = ask_question(request.question)
+    return response
 
 @router.post("/upload-document", response_model=UploadResponse)
 def upload_documents(file: UploadFile = File(...)):

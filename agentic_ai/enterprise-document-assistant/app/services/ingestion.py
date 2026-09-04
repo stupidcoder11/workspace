@@ -4,6 +4,7 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 from app.services.vectorstore import get_vectorstore
 from app.services.document_id import generate_document_id
 from app.core.config import settings
+from pathlib import Path
 
 def load_file(file_path: str) -> list[Document]:
     loader = PyPDFLoader(file_path)
@@ -20,8 +21,10 @@ def ingest_pdf(file_path: str) -> int:
     document_id: str = generate_document_id(file_path)
     chunk_ids = [f"{document_id}_{index}" for index in range(len(chunks))]
 
-    for chunk in chunks:
+    for index, chunk in enumerate(chunks):
         chunk.metadata["document_id"] = document_id
+        chunk.metadata["document_name"] = Path(file_path).name
+        chunk.metadata["chunk_id"] = chunk_ids[index]
 
     vectorstore = get_vectorstore()
 
