@@ -6,10 +6,9 @@ from app.services.rag import ask_question
 from app.services.file_handler import save_upload_file
 from app.services.ingestion import ingest_pdf
 
-router = APIRouter()
+router = APIRouter(tags=["RAG API"])
 
-
-@router.post("/ask", response_model=AskResponse)
+@router.post("/ask", response_model=AskResponse, description="This endpoint takes user queries as input and provides a response to it.")
 def ask(request: AskRequest):
     response = ask_question(request.question)
     return response

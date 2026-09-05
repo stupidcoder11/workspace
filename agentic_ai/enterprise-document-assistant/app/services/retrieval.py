@@ -6,5 +6,7 @@ def retrieve_documents(question: str, top_k: int = 4) -> list[Document]:
     return vectorstore.similarity_search(question, k=top_k)
 
 def build_context(documents: list[Document]) -> str:
-    context: str = "\n\n".join(d.page_content for d in documents)
+    context: str = "\n\n".join(
+        f"{pos}\n{doc.page_content}" for pos, doc in enumerate(documents, start=1)
+    )
     return context

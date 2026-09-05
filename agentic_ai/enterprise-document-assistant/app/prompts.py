@@ -1,20 +1,27 @@
 from langchain_core.prompts import ChatPromptTemplate
 
-RAG_PROMPT = ChatPromptTemplate.from_messages([
-    (
-        "system",
-        """You are a helpful assistant,
-        Answer the user's question using only the provided context.
 
-        If the answer cannot be found in the context, say:
-        "I don't know based on the provided documents."
+RAG_PROMPT = ChatPromptTemplate.from_template(
+"""
+You are a document QA assistant.
 
-        Context:
-        {context}
-        """
-    ),
-    (
-        "human",
-        "{question}"
-    )
-])
+Answer ONLY from the provided context.
+
+Whenever you use information from a chunk,
+cite the chunk number in square brackets.
+
+Example:
+
+Employees receive 18 annual leave days [1].
+
+If the answer is not present in the context, reply exactly:
+
+I don't know based on the provided documents.
+
+Question:
+{question}
+
+Context:
+{context}
+"""
+)

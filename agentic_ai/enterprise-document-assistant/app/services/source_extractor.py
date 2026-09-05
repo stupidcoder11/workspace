@@ -8,11 +8,12 @@ Goal
 from langchain_core.documents import Document
 from typing import Any
 
-def extract_sources(documents: list[Document]) -> list[dict[str, Any]]:
+def build_sources_from_citations(citations: list[int], documents: list[Document]) -> list[dict[str, Any]]:
     sources: list[dict[str, Any]] = []
     seen: set[tuple[Any | None, Any | None]] = set()
 
-    for doc in documents:
+    for citation in citations:
+        doc = documents[citation - 1]
         source = {
             "document": doc.metadata.get("document_name"),
             "page": doc.metadata.get("page"),
