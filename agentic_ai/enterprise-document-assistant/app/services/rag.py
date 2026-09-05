@@ -3,8 +3,11 @@ from app.prompts import RAG_PROMPT
 from app.services.retrieval import build_context, retrieve_documents
 from app.services.source_extractor import build_sources_from_citations
 from app.services.citation_parser import extract_citations
+from app.core.logger import get_logger
 from langchain_core.documents import Document
 from typing import Any
+
+logger = get_logger(__name__)
 
 def ask_question(msg: str) -> dict[str, Any]:
     documents: list[Document] = retrieve_documents(msg)
@@ -16,6 +19,8 @@ def ask_question(msg: str) -> dict[str, Any]:
         "question": msg
     })
     citations: list[int] = extract_citations(response.text)
+    logger.info(f"Citations used : {citations}")
+    
     sources: list[dict[str, Any]] = build_sources_from_citations(citations, documents)
 
     return {

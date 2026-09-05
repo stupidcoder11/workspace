@@ -4,7 +4,10 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 from app.services.vectorstore import get_vectorstore
 from app.services.document_id import generate_document_id
 from app.core.config import settings
+from app.core.logger import get_logger
 from pathlib import Path
+
+logger = get_logger(__name__)
 
 def load_file(file_path: str) -> list[Document]:
     loader = PyPDFLoader(file_path)
@@ -12,7 +15,9 @@ def load_file(file_path: str) -> list[Document]:
 
 def split_documents(documents: list[Document]) -> list[Document]:
     splitter = RecursiveCharacterTextSplitter(chunk_size=settings.CHUNK_SIZE, chunk_overlap=settings.CHUNK_OVERLAP)
-    return splitter.split_documents(documents)
+    chunks: list[Document] = splitter.split_documents(documents)
+    logger.info(f"Generated {len(chunks)} chunks.")
+    return chunks
 
 def ingest_pdf(file_path: str) -> int:
     documents = load_file(file_path)
@@ -33,8 +38,10 @@ def ingest_pdf(file_path: str) -> int:
         "document_id": document_id
     })
     if existing["ids"]:
-        print("[Ingestion skipped to avoid document duplicity.]")
+        logger.info(f"Ingestion skipped to avoid document (document_id={document_id}) duplicity")
         return 0
+
+    logger.info(f"New document (document_id={document_id}) detected, ingestion begins")
     
     vectorstore.add_documents(
         documents=chunks,
